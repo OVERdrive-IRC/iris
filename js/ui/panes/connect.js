@@ -111,7 +111,7 @@ qwebirc.ui.Panes.Connect.pclass = new Class({
 
     var c = conf.frontend.initial_chans.split(" ")[0].split(",");
 
-    text.appendChild(document.createTextNode("To connect to " + conf.frontend.network_name + " IRC and join channel" + ((c.length>1)?"s":"") + " "));
+    text.appendChild(document.createTextNode("To connect to " + conf.frontend.network_name + " and join channel" + ((c.length>1)?"s":"") + " "));
 
     for(var i=0;i<c.length;i++) {
       if((c.length > 1) && (i == c.length - 1)) {
@@ -179,7 +179,7 @@ qwebirc.ui.Panes.Connect.pclass = new Class({
 
     var td = new Element("td");
     tr.appendChild(td);
-    td.set("html", "<h1>Connect to " + conf.frontend.network_name + " IRC</h1>");
+    td.set("html", "<h1>Connect to " + conf.frontend.network_name + "</h1>");
 
     var tr = new Element("tr");
     tbody.appendChild(tr);
