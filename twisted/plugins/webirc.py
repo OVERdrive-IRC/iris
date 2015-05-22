@@ -57,7 +57,7 @@ def get_ssl_factory_factory():
   class ChainingOpenSSLContextFactory(DefaultOpenSSLContextFactory):
     def __init__(self, *args, **kwargs):
       self.chain = None
-      if kwargs.has_key("certificateChainFile"):
+      if "certificateChainFile" in kwargs:
         self.chain = kwargs["certificateChainFile"]
         del kwargs["certificateChainFile"]
 

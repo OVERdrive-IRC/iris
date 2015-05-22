@@ -1,9 +1,9 @@
 from twisted.web import resource, server, static, http
 from twisted.internet import error, reactor
-import engines
+from . import engines
 import mimetypes
-import config
-import sigdebug
+from . import config
+from . import sigdebug
 import re
 
 class RootResource(resource.Resource):

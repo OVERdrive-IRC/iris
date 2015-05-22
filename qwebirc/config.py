@@ -1,7 +1,7 @@
 import os
-import ConfigParser
+import configparser
 import qwebirc.util.qjson as json
-import config_options as options
+from . import config_options as options
 
 
 class ConfigException(Exception):
@@ -9,7 +9,7 @@ class ConfigException(Exception):
 
 
 def load_config():
-    config = ConfigParser.SafeConfigParser()
+    config = configparser.SafeConfigParser()
     config.read('iris.conf')
 
     for section in config.sections():
@@ -27,27 +27,27 @@ def check_config(interpret):
     sections = globals()
     for section in options.sections:
         if not section in sections:
-            raise ConfigParser.NoSectionError(section)
+            raise configparser.NoSectionError(section)
 
         for opt_section, option in options.booleans:
             if opt_section == section and option not in sections[section]:
-                raise ConfigParser.NoOptionError(option, section)
+                raise configparser.NoOptionError(option, section)
 
         for opt_section, option in options.floats:
             if opt_section == section and option not in sections[section]:
-                raise ConfigParser.NoOptionError(option, section)
+                raise configparser.NoOptionError(option, section)
 
         for opt_section, option in options.integers:
             if opt_section == section and option not in sections[section]:
-                raise ConfigParser.NoOptionError(option, section)
+                raise configparser.NoOptionError(option, section)
 
         for opt_section, option in options.lists:
             if opt_section == section and option not in sections[section]:
-                raise ConfigParser.NoOptionError(option, section)
+                raise configparser.NoOptionError(option, section)
 
         for opt_section, option in options.strings:
             if opt_section == section and option not in sections[section]:
-                raise ConfigParser.NoOptionError(option, section)
+                raise configparser.NoOptionError(option, section)
 
     if interpret:
         __interpret_config()
@@ -139,5 +139,5 @@ def js_config():
     return json.dumps(options)
 
 
-__base_globals = globals().keys()
+__base_globals = list(globals().keys())
 load_config()

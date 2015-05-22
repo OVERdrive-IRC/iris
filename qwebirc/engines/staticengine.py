@@ -2,7 +2,7 @@ from twisted.web import resource, server, static, error
 from qwebirc.util.gziprequest import GZipRequest
 import qwebirc.util as util
 import pprint
-from adminengine import AdminEngineAction
+from .adminengine import AdminEngineAction
 
 # TODO, cache gzip stuff
 cache = {}

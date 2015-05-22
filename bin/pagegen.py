@@ -29,15 +29,15 @@ def csslist(name, debug, gen=False):
 def _getgitid():
   try:
     p = subprocess.Popen(["git", "show", "--pretty=oneline", "--quiet"], stdout=subprocess.PIPE)
-  except Exception, e:
+  except Exception as e:
     if hasattr(e, "errno") and e.errno == 2:
-      raise GitException, "unable to execute"
-    raise GitException, "unknown exception running git: %s" % repr(e)
+      raise GitException("unable to execute")
+    raise GitException("unknown exception running git: %s" % repr(e))
     
   data = p.communicate()[0]
   status = p.wait()
   if status != 0 and status != 1:
-    raise GitException, "unable to get id"
+    raise GitException("unable to get id")
   return re.match("^([0-9a-f]+)", data).group(1)
 
 GitID = None
@@ -46,8 +46,8 @@ def getgitid():
   if GitID is None:
     try:
       GitID =  _getgitid()
-    except GitException, e:
-      print >>sys.stderr, "warning: git: %s (using a random id)." % e
+    except GitException as e:
+      print("warning: git: %s (using a random id)." % e, file=sys.stderr)
       GitID = os.urandom(10).encode("hex")
   return GitID
     

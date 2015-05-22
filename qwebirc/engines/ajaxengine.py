@@ -3,7 +3,7 @@ from twisted.names import client
 from twisted.internet import reactor, error
 import md5, sys, os, time, traceback, socket
 import qwebirc.ircclient as ircclient
-from adminengine import AdminEngineAction
+from .adminengine import AdminEngineAction
 from qwebirc.util import HitCounter
 import qwebirc.dns as qdns
 import qwebirc.util.qjson as json
@@ -35,9 +35,9 @@ def jsondump(fn):
       if x is None:
         return server.NOT_DONE_YET
       x = (True, x)
-    except AJAXException, e:
+    except AJAXException as e:
       x = (False, e[0])
-    except PassthruException, e:
+    except PassthruException as e:
       return str(e)
       
     return json.dumps(x)
@@ -180,14 +180,14 @@ class AJAXEngine(resource.Resource):
       if handler is not None:
         return handler(self, request)
         
-    raise PassthruException, http_error.NoResource().render(request)
+    raise PassthruException(http_error.NoResource().render(request))
 
   def newConnection(self, request):
     ip = request.getClientIP()
 
     nick = request.args.get("nick")
     if not nick:
-      raise AJAXException, "Nickname not supplied."
+      raise AJAXException("Nickname not supplied.")
     nick = ircclient.irc_decode(nick[0])
 
     password = request.args.get("password")
@@ -201,7 +201,7 @@ class AJAXEngine(resource.Resource):
     if authSecret is not None:
       authSecret = ircclient.irc_decode(authSecret[0])
 
-    for i in xrange(10):
+    for i in range(10):
       id = get_session_id()
       if not Sessions.get(id):
         break
@@ -253,11 +253,11 @@ class AJAXEngine(resource.Resource):
     
     sessionid = request.args.get("s")
     if sessionid is None:
-      raise AJAXException, bad_session_message
+      raise AJAXException(bad_session_message)
       
     session = Sessions.get(sessionid[0])
     if not session:
-      raise AJAXException, bad_session_message
+      raise AJAXException(bad_session_message)
     return session
     
   def subscribe(self, request):
@@ -268,7 +268,7 @@ class AJAXEngine(resource.Resource):
   def push(self, request):
     command = request.args.get("c")
     if command is None:
-      raise AJAXException, "No command specified."
+      raise AJAXException("No command specified.")
     self.__total_hit()
     
     decoded = ircclient.irc_decode(command[0])
@@ -277,17 +277,17 @@ class AJAXEngine(resource.Resource):
 
     if len(decoded) > config.tuneback["maxlinelen"]:
       session.disconnect()
-      raise AJAXException, "Line too long."
+      raise AJAXException("Line too long.")
 
     try:
       session.push(decoded)
     except AttributeError: # occurs when we haven't noticed an error
       session.disconnect()
-      raise AJAXException, "Connection closed by server; try reconnecting by reloading the page."
-    except Exception, e: # catch all
+      raise AJAXException("Connection closed by server; try reconnecting by reloading the page.")
+    except Exception as e: # catch all
       session.disconnect()        
       traceback.print_exc(file=sys.stderr)
-      raise AJAXException, "Unknown error."
+      raise AJAXException("Unknown error.")
   
     return True
   
@@ -300,7 +300,7 @@ class AJAXEngine(resource.Resource):
   @property
   def adminEngine(self):
     return {
-      "Sessions": [(str(v.client.client), AdminEngineAction("close", self.closeById, k)) for k, v in Sessions.iteritems() if not v.closed],
+      "Sessions": [(str(v.client.client), AdminEngineAction("close", self.closeById, k)) for k, v in Sessions.items() if not v.closed],
       "Connections": [(self.__connect_hit,)],
       "Total hits": [(self.__total_hit,)],
     }

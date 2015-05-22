@@ -68,7 +68,7 @@ else:
     try:
       rn = reactor + "reactor"
       getattr(__import__("twisted.internet", fromlist=[rn]), rn).install()
-      print "Auto-selecting reactor: " + reactor
+      print("Auto-selecting reactor: " + reactor)
       break
     except ImportError:
       pass

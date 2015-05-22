@@ -1,7 +1,7 @@
 from twisted.web import resource, server, static
 from twisted.mail.smtp import SMTPSenderFactory, ESMTPSenderFactory
 from twisted.internet import defer, reactor
-from StringIO import StringIO
+from io import StringIO
 from email.mime.text import MIMEText
 import qwebirc.util as util
 import qwebirc.config as config

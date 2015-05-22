@@ -13,7 +13,7 @@ class GZipRequest(object):
     if 'request' in self.__dict__:
       return getattr(self.request, attr)
       
-    raise AttributeError, attr
+    raise AttributeError(attr)
 
   def __setattr__(self, attr, value):
     if 'request' in self.__dict__:
@@ -47,5 +47,5 @@ class GZipRequest(object):
     if remain:
       self.request.write(remain)
       
-    self.request.write(struct.pack('<LL', self.crc & 0xFFFFFFFFL, self.size & 0xFFFFFFFFL))
+    self.request.write(struct.pack('<LL', self.crc & 0xFFFFFFFF, self.size & 0xFFFFFFFF))
     self.request.finish()

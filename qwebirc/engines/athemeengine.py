@@ -1,9 +1,9 @@
 from twisted.web import resource, server, static, error as http_error
-from xmlrpclib import ServerProxy
-import fnmatch, md5, sys, os, time, traceback, socket, xmlrpclib
+from xmlrpc.client import ServerProxy
+import fnmatch, md5, sys, os, time, traceback, socket, xmlrpc.client
 import qwebirc.util.qjson as json
 import qwebirc.config as config
-from adminengine import AdminEngineAction
+from .adminengine import AdminEngineAction
 from qwebirc.util import HitCounter
 
 class AJAXException(Exception):
@@ -58,7 +58,7 @@ class AthemeEngine(resource.Resource):
       try:
         result = rpc(*params)
         return result
-      except xmlrpclib.ProtocolError:
+      except xmlrpc.client.ProtocolError:
         self.get_xmlrpc_conn() 
     return None
   
@@ -72,7 +72,7 @@ class AthemeEngine(resource.Resource):
    output = None
    try:
      output = self.do_xmlrpc(self.conn.atheme.command, ("*", "*", "0.0.0.0", "ALIS", "LIST", "*", "-maxmatches", "-1"))
-   except xmlrpclib.Fault, e:
+   except xmlrpc.client.Fault as e:
      output = None
    if output is None:
      return None
@@ -109,7 +109,7 @@ class AthemeEngine(resource.Resource):
       if handler is not None:
         return handler(self, request)
         
-    raise PassthruException, http_error.NoResource().render(request)
+    raise PassthruException(http_error.NoResource().render(request))
 
   def login(self, request):
     """Login via XMLRPC, getting an authentication token.
@@ -120,10 +120,10 @@ class AthemeEngine(resource.Resource):
     """
     user = request.args.get("u")
     if user is None:
-      raise AJAXException, "No username specified."
+      raise AJAXException("No username specified.")
     password = request.args.get("p")
     if password is None:
-      raise AJAXException, "No password specified."
+      raise AJAXException("No password specified.")
 
     self.__total_hit()
    
@@ -136,7 +136,7 @@ class AthemeEngine(resource.Resource):
         response = json.dumps(result)
       else:
         response = json.dumps(None)
-    except xmlrpclib.Fault, e:
+    except xmlrpc.client.Fault as e:
       result = { "success": False, "output": e.faultString }
       response = json.dumps(result)
 
@@ -154,10 +154,10 @@ class AthemeEngine(resource.Resource):
     """
     user = request.args.get("u")
     if user is None:
-      raise AJAXException, "No username specified."
+      raise AJAXException("No username specified.")
     token = request.args.get("t")
     if token is None:
-      raise AJAXException, "No token specified."
+      raise AJAXException("No token specified.")
 
     self.__total_hit()
   
@@ -169,7 +169,7 @@ class AthemeEngine(resource.Resource):
         response = json.dumps(result)
       else:
         response = json.dumps(None)
-    except xmlrpclib.Fault, e:
+    except xmlrpc.client.Fault as e:
       result = { "success": False, "output": e.faultString }
       response = json.dumps(result)
 
@@ -193,10 +193,10 @@ class AthemeEngine(resource.Resource):
 
     service = request.args.get("s")
     if service is None:
-      raise AJAXException, "No command specified."
+      raise AJAXException("No command specified.")
     command = request.args.get("c")
     if command is None:
-      raise AJAXException, "No command specified."
+      raise AJAXException("No command specified.")
     params = request.args.get("p")
     if params is None:
       params = []
@@ -211,7 +211,7 @@ class AthemeEngine(resource.Resource):
         response = json.dumps(result)
       else:
         response = json.dumps(None)
-    except xmlrpclib.Fault, e:
+    except xmlrpc.client.Fault as e:
       result = { "success": False, "output": e.faultString }
       response = json.dumps(result)
 
@@ -235,14 +235,14 @@ class AthemeEngine(resource.Resource):
 
     start = request.args.get("s")
     if start is None:
-      raise AJAXException, "No start point specified."
+      raise AJAXException("No start point specified.")
     start = int(start[0])
     if start < 0:
       start = 0
 
     length = request.args.get("l")
     if length is None:
-      raise AJAXException, "No length specified."
+      raise AJAXException("No length specified.")
     length = int(length[0])
 
     chanmask = request.args.get("cm")
