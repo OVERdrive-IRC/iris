@@ -1,6 +1,5 @@
-import config
+from . import config
 import qwebirc.util.qjson as json
-
 
 def get_options():
     options = dict(networkName=config.NETWORK_NAME, appTitle=config.APP_TITLE, baseURL=config.BASE_URL,

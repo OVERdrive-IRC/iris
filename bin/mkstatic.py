@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 from __future__ import print_function
-import compile
-import pages
+from . import compile
+from . import pages
 import sys
 import os
 import shutil
 import compileall
-
 
 def trymkdir(*dir):
     try:

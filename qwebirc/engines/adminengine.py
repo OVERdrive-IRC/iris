@@ -1,6 +1,9 @@
 from twisted.web import resource, server, static
 from cgi import escape
-from urllib.parse import urlencode
+try:
+    from urllib.parse import urlencode
+except ImportError:
+    from urllib import urlencode
 import copy
 import time
 import qwebirc.config as config

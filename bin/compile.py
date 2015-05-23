@@ -6,7 +6,7 @@ dependencies.vcheck()
 import pages
 import os
 import subprocess
-import pagegen
+from . import pagegen
 import shutil
 import sys
 import time

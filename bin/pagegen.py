@@ -1,11 +1,10 @@
 from __future__ import print_function
 import os
 import sys
-import pages
+from . import pages
 import subprocess
 import re
 import qwebirc.config as config
-
 
 class GitException(Exception):
     pass

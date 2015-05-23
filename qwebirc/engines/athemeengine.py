@@ -1,5 +1,4 @@
 from twisted.web import resource, server, static, error as http_error
-from xmlrpc.client import ServerProxy
 import fnmatch
 import md5
 import sys
@@ -7,7 +6,10 @@ import os
 import time
 import traceback
 import socket
-import xmlrpc.client
+try:
+    import xmlrpc.client as xmlrpclib
+except ImportError:
+    import xmlrpclib
 import qwebirc.util.qjson as json
 import qwebirc.config as config
 from .adminengine import AdminEngineAction
@@ -50,7 +52,7 @@ class AthemeEngine(resource.Resource):
     def get_xmlrpc_conn(self):
         """Get an XMLRPC connection to Atheme, replacing any previous connection."""
         try:
-            self.conn = ServerProxy(config.athemeengine["xmlrpc_path"])
+            self.conn = xmlrpclib.ServerProxy(config.athemeengine["xmlrpc_path"])
         except AttributeError:
             self.conn = None
 
@@ -69,7 +71,7 @@ class AthemeEngine(resource.Resource):
             try:
                 result = rpc(*params)
                 return result
-            except xmlrpc.client.ProtocolError:
+            except xmlrpclib.ProtocolError:
                 self.get_xmlrpc_conn()
         return None
 
@@ -84,7 +86,7 @@ class AthemeEngine(resource.Resource):
         try:
             output = self.do_xmlrpc(
                 self.conn.atheme.command, ("*", "*", "0.0.0.0", "ALIS", "LIST", "*", "-maxmatches", "-1"))
-        except xmlrpc.client.Fault as e:
+        except xmlrpclib.Fault as e:
             output = None
         if output is None:
             return None
@@ -148,7 +150,7 @@ class AthemeEngine(resource.Resource):
                 response = json.dumps(result)
             else:
                 response = json.dumps(None)
-        except xmlrpc.client.Fault as e:
+        except xmlrpclib.Fault as e:
             result = {"success": False, "output": e.faultString}
             response = json.dumps(result)
 
@@ -182,7 +184,7 @@ class AthemeEngine(resource.Resource):
                 response = json.dumps(result)
             else:
                 response = json.dumps(None)
-        except xmlrpc.client.Fault as e:
+        except xmlrpclib.Fault as e:
             result = {"success": False, "output": e.faultString}
             response = json.dumps(result)
 
@@ -225,7 +227,7 @@ class AthemeEngine(resource.Resource):
                 response = json.dumps(result)
             else:
                 response = json.dumps(None)
-        except xmlrpc.client.Fault as e:
+        except xmlrpclib.Fault as e:
             result = {"success": False, "output": e.faultString}
             response = json.dumps(result)
 
