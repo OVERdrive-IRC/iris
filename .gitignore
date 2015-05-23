@@ -21,3 +21,5 @@ syslog.py
 run.sh
 
 iris.conf
+.checked
+.compiled
