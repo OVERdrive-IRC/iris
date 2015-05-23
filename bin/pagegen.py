@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os, sys, pages, subprocess, re
 import qwebirc.config as config
 

@@ -1,5 +1,8 @@
 import os
-import configparser
+try:
+    import configparser
+except ImportError:
+    import ConfigParser as configparser
 import qwebirc.util.qjson as json
 from . import config_options as options
 

@@ -1,3 +1,4 @@
+from __future__ import print_function
 from twisted.web import resource, server, static, error as http_error
 from twisted.names import client
 from twisted.internet import reactor, error
