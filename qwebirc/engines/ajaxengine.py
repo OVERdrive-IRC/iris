@@ -2,7 +2,7 @@ from __future__ import print_function
 from twisted.web import resource, server, static, error as http_error
 from twisted.names import client
 from twisted.internet import reactor, error
-import md5
+import hashlib
 import sys
 import os
 import time
@@ -18,7 +18,7 @@ Sessions = {}
 
 
 def get_session_id():
-    return md5.md5(os.urandom(16)).hexdigest()
+    return hashlib.md5(os.urandom(16)).hexdigest()
 
 
 class BufferOverflowException(Exception):

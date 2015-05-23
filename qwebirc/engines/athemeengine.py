@@ -1,6 +1,5 @@
 from twisted.web import resource, server, static, error as http_error
 import fnmatch
-import md5
 import sys
 import os
 import time
