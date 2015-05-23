@@ -33,7 +33,7 @@ booleans = [
     ("ui", "beep_on_mention"),
     ("ui", "simple_color"),
 ]
-    
+
 floats = [
     ("tuneback", "update_freq"),
 ]

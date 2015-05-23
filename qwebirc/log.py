@@ -1,5 +1,5 @@
 def NullLogger():
-  def logger(*args, **kwargs):
-    pass
+    def logger(*args, **kwargs):
+        pass
 
-  return logger
+    return logger

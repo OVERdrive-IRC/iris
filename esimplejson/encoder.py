@@ -27,6 +27,7 @@ for i in range(0x20):
 INFINITY = float('1e66666')
 FLOAT_REPR = repr
 
+
 def floatstr(o, allow_nan=True):
     # Check for specials.  Note that this type of test is processor- and/or
     # platform-specific, so do tests which don't depend on the internals.
@@ -42,7 +43,7 @@ def floatstr(o, allow_nan=True):
 
     if not allow_nan:
         raise ValueError("Out of range float values are not JSON compliant: %r"
-            % (o,))
+                         % (o,))
 
     return text
 
@@ -59,6 +60,7 @@ def encode_basestring(s):
 def py_encode_basestring_ascii(s):
     if isinstance(s, str) and HAS_UTF8.search(s) is not None:
         s = s.decode('utf-8')
+
     def replace(match):
         s = match.group(0)
         try:
@@ -83,11 +85,12 @@ except NameError:
 
 
 class JSONEncoder(object):
+
     """
     Extensible JSON <http://json.org> encoder for Python data structures.
 
     Supports the following objects and types by default:
-    
+
     +-------------------+---------------+
     | Python            | JSON          |
     +===================+===============+
@@ -114,9 +117,10 @@ class JSONEncoder(object):
     __all__ = ['__init__', 'default', 'encode', 'iterencode']
     item_separator = ', '
     key_separator = ': '
+
     def __init__(self, skipkeys=False, ensure_ascii=True,
-            check_circular=True, allow_nan=True, sort_keys=False,
-            indent=None, separators=None, encoding='utf-8', default=None):
+                 check_circular=True, allow_nan=True, sort_keys=False,
+                 indent=None, separators=None, encoding='utf-8', default=None):
         """
         Constructor for JSONEncoder, with sensible defaults.
 
@@ -242,7 +246,7 @@ class JSONEncoder(object):
             items = iter(dct.items())
         _encoding = self.encoding
         _do_decode = (_encoding is not None
-            and not (_encoding == 'utf-8'))
+                      and not (_encoding == 'utf-8'))
         for key, value in items:
             if isinstance(key, str):
                 if _do_decode:
@@ -330,7 +334,7 @@ class JSONEncoder(object):
 
         For example, to support arbitrary iterators, you could
         implement default like this::
-            
+
             def default(self, o):
                 try:
                     iterable = iter(o)
@@ -353,7 +357,7 @@ class JSONEncoder(object):
         if isinstance(o, str):
             if isinstance(o, str):
                 _encoding = self.encoding
-                if (_encoding is not None 
+                if (_encoding is not None
                         and not (_encoding == 'utf-8')):
                     o = o.decode(_encoding)
             if self.ensure_ascii:
@@ -370,9 +374,9 @@ class JSONEncoder(object):
         """
         Encode the given object and yield each string
         representation as available.
-        
+
         For example::
-            
+
             for chunk in JSONEncoder().iterencode(bigobject):
                 mysocket.write(chunk)
         """

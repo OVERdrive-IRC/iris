@@ -12,7 +12,9 @@ __all__ = ['Scanner', 'pattern']
 
 FLAGS = (VERBOSE | MULTILINE | DOTALL)
 
+
 class Scanner(object):
+
     def __init__(self, lexicon, flags=FLAGS):
         self.actions = [None]
         # Combine phrases into a compound pattern
@@ -23,13 +25,13 @@ class Scanner(object):
             phrase = token.pattern
             try:
                 subpattern = sre_parse.SubPattern(s,
-                    [(SUBPATTERN, (idx + 1, sre_parse.parse(phrase, flags)))])
+                                                  [(SUBPATTERN, (idx + 1, sre_parse.parse(phrase, flags)))])
             except sre_constants.error:
                 raise
             p.append(subpattern)
             self.actions.append(token)
 
-        s.groups = len(p) + 1 # NOTE(guido): Added to make SRE validation work
+        s.groups = len(p) + 1  # NOTE(guido): Added to make SRE validation work
         p = sre_parse.SubPattern(s, [(BRANCH, (None, p))])
         self.scanner = sre_compile.compile(p)
 

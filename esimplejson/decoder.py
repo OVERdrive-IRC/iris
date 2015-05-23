@@ -12,6 +12,7 @@ except ImportError:
 
 FLAGS = re.VERBOSE | re.MULTILINE | re.DOTALL
 
+
 def _floatconstants():
     import struct
     import sys
@@ -51,6 +52,7 @@ _CONSTANTS = {
     'null': None,
 }
 
+
 def JSONConstant(match, context, c=_CONSTANTS):
     s = match.group(0)
     fn = getattr(context, 'parse_constant', None)
@@ -83,6 +85,7 @@ BACKSLASH = {
 
 DEFAULT_ENCODING = "utf-8"
 
+
 def py_scanstring(s, end, encoding=None, strict=True, _b=BACKSLASH, _m=STRINGCHUNK.match):
     if encoding is None:
         encoding = DEFAULT_ENCODING
@@ -104,7 +107,8 @@ def py_scanstring(s, end, encoding=None, strict=True, _b=BACKSLASH, _m=STRINGCHU
             break
         elif terminator != '\\':
             if strict:
-                raise ValueError(errmsg("Invalid control character %r at", s, end))
+                raise ValueError(
+                    errmsg("Invalid control character %r at", s, end))
             else:
                 _append(terminator)
                 continue
@@ -152,6 +156,7 @@ try:
 except NameError:
     scanstring = py_scanstring
 
+
 def JSONString(match, context):
     encoding = getattr(context, 'encoding', None)
     strict = getattr(context, 'strict', True)
@@ -160,6 +165,7 @@ pattern(r'"')(JSONString)
 
 
 WHITESPACE = re.compile(r'\s*', FLAGS)
+
 
 def JSONObject(match, context, _w=WHITESPACE.match):
     pairs = {}
@@ -244,11 +250,12 @@ JSONScanner = Scanner(ANYTHING)
 
 
 class JSONDecoder(object):
+
     """
     Simple JSON <http://json.org> decoder
 
     Performs the following translations in decoding by default:
-    
+
     +---------------+-------------------+
     | JSON          | Python            |
     +===============+===================+
@@ -277,12 +284,12 @@ class JSONDecoder(object):
     __all__ = ['__init__', 'decode', 'raw_decode']
 
     def __init__(self, encoding=None, object_hook=None, parse_float=None,
-            parse_int=None, parse_constant=None, strict=True):
+                 parse_int=None, parse_constant=None, strict=True):
         """
         ``encoding`` determines the encoding used to interpret any ``str``
         objects decoded by this instance (utf-8 by default).  It has no
         effect when decoding ``unicode`` objects.
-        
+
         Note that currently only encodings that are a superset of ASCII work,
         strings of other encodings should be passed in as ``unicode``.
 

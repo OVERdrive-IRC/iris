@@ -18,11 +18,11 @@ def load_config():
     for section in config.sections():
         if section in __base_globals:
             raise ConfigException("Configuration error: Invalid section \"" +
-                    section + "\"");
+                                  section + "\"")
         globals()[section] = {}
         for k, v in config.items(section):
             globals()[section][k] = v
-    
+
     check_config(True)
 
 
@@ -78,7 +78,7 @@ def __interpret_config():
             sections[section][option] = 0
         else:
             sections[section][option] = int(sections[section][option])
-    
+
     for section, option in options.lists:
         if sections[section][option] == "":
             sections[section][option] = []
@@ -128,12 +128,13 @@ def __interpret_config():
         try:
             from twisted.internet.ssl import ClientContextFactory
         except ImportError:
-            raise ConfigException("Configuration error: SSL support not installed")
+            raise ConfigException(
+                "Configuration error: SSL support not installed")
 
 
 def js_config():
     f = frontend.copy()
-    del f["extra_html"] # already injected by pagegen.
+    del f["extra_html"]  # already injected by pagegen.
     options = {
         'atheme': atheme,
         'frontend': f,
