@@ -130,7 +130,10 @@ def main(outputdir=".", produce_debug=True):
         jmerge_files(outputdir, "js", uiname + "-" + ID, alljs,
                      file_prefix="QWEBIRC_BUILD=\"" + ID + "\";\n")
 
-    subprocess.call(["as3compile", os.path.join(outputdir, "swf", "flashsocket.as"), "-o", os.path.join(outputdir, "static", "swf", "flashsocket.swf")])
+    try:
+        subprocess.call(["as3compile", os.path.join(outputdir, "swf", "flashsocket.as"), "-o", os.path.join(outputdir, "static", "swf", "flashsocket.swf")])
+    except OSError:
+        print("warning: 'as3compile' not found in path. FlashSocket support will be disabled.")
     os.rmdir(coutputdir)
 
     f = open(".compiled", "w")
