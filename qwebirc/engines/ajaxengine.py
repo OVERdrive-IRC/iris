@@ -164,7 +164,7 @@ class IRCSession:
 
 
 def connect_notice(line):
-    return "c", "NOTICE", "", ("AUTH", "*** (qwebirc) %s" % line)
+  return "c", "NOTICE AUTH :*** (qwebirc) %s" % line
 
 
 class Channel:
@@ -221,13 +221,6 @@ class AJAXEngine(resource.Resource):
         if password is not None:
             password = ircclient.irc_decode(password[0])
 
-        authUser = request.args.get("authUser")
-        if authUser is not None:
-            authUser = ircclient.irc_decode(authUser[0])
-        authSecret = request.args.get("authSecret")
-        if authSecret is not None:
-            authSecret = ircclient.irc_decode(authSecret[0])
-
         for i in range(10):
             id = get_session_id()
             if not Sessions.get(id):
@@ -251,9 +244,6 @@ class AJAXEngine(resource.Resource):
                           realname=realname, perform=perform, hostname=hostname)
             if password is not None:
                 kwargs["password"] = password
-            if ((authUser is not None) and (authSecret is not None)):
-                kwargs["authUser"] = authUser
-                kwargs["authSecret"] = authSecret
 
             client = ircclient.createIRC(session, **kwargs)
             session.client = client

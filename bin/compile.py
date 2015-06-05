@@ -89,6 +89,11 @@ def merge_files(output, files, root_path=lambda x: x):
         f2.close()
     f.close()
 
+def mkdir(path):
+    try:
+        os.mkdir(path)
+    except:
+        pass
 
 def main(outputdir=".", produce_debug=True):
     ID = pagegen.getgitid()
@@ -96,15 +101,9 @@ def main(outputdir=".", produce_debug=True):
     pagegen.main(outputdir, produce_debug=produce_debug)
 
     coutputdir = os.path.join(outputdir, "compiled")
-    try:
-        os.mkdir(coutputdir)
-    except:
-        pass
-
-    try:
-        os.mkdir(os.path.join(outputdir, "static", "css"))
-    except:
-        pass
+    mkdir(coutputdir)
+    mkdir(os.path.join(outputdir, "static", "css"))
+    mkdir(os.path.join(outputdir, "static", "swf"))
 
     for (uiname, value) in pages.UIs.items():
         csssrc = pagegen.csslist(uiname, True)
@@ -131,6 +130,7 @@ def main(outputdir=".", produce_debug=True):
         jmerge_files(outputdir, "js", uiname + "-" + ID, alljs,
                      file_prefix="QWEBIRC_BUILD=\"" + ID + "\";\n")
 
+    subprocess.call(["as3compile", os.path.join(outputdir, "swf", "flashsocket.as"), "-o", os.path.join(outputdir, "static", "swf", "flashsocket.swf")])
     os.rmdir(coutputdir)
 
     f = open(".compiled", "w")
