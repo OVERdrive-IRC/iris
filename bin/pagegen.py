@@ -88,7 +88,6 @@ def producehtml(name, debug):
         }, {}, "FlashSocket");
       </script>
   </div>""" % (config.frontend["static_base_url"])
->>>>>>> ariscop/for-atheme
     return """%s
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
