@@ -113,7 +113,7 @@ qwebirc.ui.Panes.Embed.pclass = new Class({
       "title": "Set channels",
       "first": "Enter the channels you would like the client to join on startup:",
       "hint": "You can supply multiple channels by seperating them with a comma, e.g.:",
-      "example": "#rogue,#eu-mage",
+      "example": "#chat,#dev",
       middle: this.chanBox
     }).addEvent("show", af.bind(this.chanBox));
 
