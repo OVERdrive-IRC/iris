@@ -164,7 +164,7 @@ class IRCSession:
 
 
 def connect_notice(line):
-  return "c", "NOTICE AUTH :*** (qwebirc) %s" % line
+    return "c", "NOTICE AUTH :*** (qwebirc) %s" % line
 
 
 class Channel:
