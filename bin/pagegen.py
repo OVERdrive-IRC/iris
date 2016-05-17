@@ -94,6 +94,7 @@ def producehtml(name, debug):
   <base />
   <title>%s (Iris)</title>
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" type="image/png" href="%simages/favicon.png"/>
 %s
 %s%s
