@@ -108,7 +108,7 @@ def producehtml(name, debug):
 <body>
   <div id="ircui">
     <noscript>
-      <div id="noscript">Javascript is required to use IRC.</div>
+      <div id="noscript">Javascript is required to use Webchat.</div>
     </noscript>%s
   </div>
 %s
